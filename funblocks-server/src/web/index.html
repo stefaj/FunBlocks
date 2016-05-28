@@ -1,0 +1,95 @@
+<html>
+  <head>
+
+    <!-- JQuery -->
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+
+
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
+    integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7"
+    crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet"
+    href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css"
+    integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r"
+    crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script
+    src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+    integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+    crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+
+    <script src="blockly/blockly_compressed.js"></script>
+    <script src="blockly/blocks_compressed.js"></script>
+    <script src="blockly/msg/js/en.js"></script>
+    <script src="blockly/javascript_compressed.js"></script>
+
+
+  </head>
+
+
+  <body>
+  <div class="container-fluid">
+    <div class="row full">
+        <div id="sidebar" class="col-md-2">
+            <h3>Fun Blocks</h3>
+            <ul class="nav nav-pills nav-stacked">
+                <li class="active"><a href="#">CodeWorld</a></li>
+                <li><a href="#">Definitions</a></li>
+                <li><a href="#">Link 2</a></li>
+            </ul>
+        </div>
+        <div id="main" class="col-md-6">
+            <div class="row">
+              <h3>Blockly</h3>
+                <div class="col-md-12">
+
+                  <xml id="toolbox" style="display: none">
+                          <block type="controls_if"></block>
+                           <block type="controls_repeat_ext"></block>
+                           <block type="logic_compare"></block>
+                           <block type="math_number"></block>
+                           <block type="math_arithmetic"></block>
+                           <block type="text"></block>
+                           <block type="text_print"></block>
+                   </xml>
+
+                  <div id="blocklyArea">
+                    <div id="blocklyDiv" style="height: 700px; width:900px;"> </div>
+                  </div>
+
+                </br>
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-primary" id="btnBuild">Build</button>
+                    <button type="button" class="btn btn-success">Run</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+          <h3>CodeWorld</h3>
+          <div id="textarea"></div>
+        </div>
+    </div>
+  </div>
+  <script>
+    var workspace = Blockly.inject('blocklyDiv',
+      {toolbox: document.getElementById('toolbox')});
+  </script>
+
+  <script>
+  $('#btnBuild').on('click', function(event) {
+    event.preventDefault(); // To prevent following the link (optional)
+    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    alert(code);
+  });
+  </script>
+
+  </body>
+
+</html>
