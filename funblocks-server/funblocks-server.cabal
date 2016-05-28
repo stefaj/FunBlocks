@@ -26,7 +26,14 @@ description:
 executable funblocks-server
   main-is:             Main.hs
   
-  build-depends:       base >=4.8 && <4.9
+  build-depends:       base >=4.8 && <4.9,
+                       base64-bytestring,
+                       bytestring,
+                       directory,
+                       filepath,
+                       snap-core,
+                       snap-server,
+                       text
   
   hs-source-dirs:      src
   
