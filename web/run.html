@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CodeWorld</title>
+    <style type="text/css">
+      * { margin: 0; overflow: hidden }
+      #screen {
+          cursor: default;
+          width: 100vw;
+          height: 100vw;
+          max-height: 100vh;
+          max-width: 100vh;
+      }
+    </style>
+  </head>
+  <body style="text-align: center">
+    <canvas id="screen"></canvas>
+    <img id="cwlogo" style="display: none" src="codeworld.png" width=900 height=200>
+  </body>
+  <script type="text/javascript">
+    function reportRuntimeError(err, str) {
+      var message = window.parent.addToMessage('\n\n' + str);
+
+      if (err) {
+        var message = window.parent.document.getElementById('message');
+        message.classList.add('error');
+      }
+    }
+  </script>
+
+  <script type="text/javascript" src="rts.js"></script>
+  <script type="text/javascript" src="lib.base.js"></script>
+  <script type="text/javascript" src="out.base.js"></script>
+
+  <script type="text/javascript">
+    var params = location.search.slice(1).split('&');
+    for (var i = 0; i < params.length; i++) {
+      var parts = params[i].split('=');
+      if (parts[0] == 'hash') {
+        var hash = params[i].slice(5);
+        if (hash.indexOf('%3d%3d', hash.length - 6) !== -1 ||
+            hash.indexOf('%3D%3D', hash.length - 6) !== -1) {
+          hash = hash.slice(0, hash.length - 6);
+        }
+        if (hash.slice(-2) === '==') {
+          hash = hash.slice(0, -2);
+        }
+        var script = document.createElement('script');
+        script.setAttribute('type', 'text/javascript');
+        script.setAttribute('src', 'runJS?hash=' + hash);
+
+        script.onload = function() {
+          h$main(h$mainZCMainzimain);
+        }
+
+        document.head.appendChild(script);
+
+        break;
+      }
+    }
+  </script>
+</html>

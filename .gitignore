@@ -1,6 +1,8 @@
 dist
 cabal-dev
 *.o
+*.js_o
+*.js_hi
 *.hi
 *.chi
 *.chs.h
@@ -14,3 +16,9 @@ cabal.sandbox.config
 *.aux
 *.hp
 .stack-work/
+*.jsexe
+Main
+build/
+data
+log/
+nohup.out

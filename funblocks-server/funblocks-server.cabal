@@ -33,7 +33,13 @@ executable funblocks-server
                        filepath,
                        snap-core,
                        snap-server,
-                       text
+                       text,
+                       aeson,
+                       process,
+                       regex-tdfa,
+                       mtl,
+                       http-conduit,
+                       cryptohash
   
   hs-source-dirs:      src
   

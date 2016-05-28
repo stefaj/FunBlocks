@@ -1,9 +1,0 @@
-[28/May/2016:13:33:17 +0000] Server.httpServe: START, binding to [http://0.0.0.0:8000/]
-[28/May/2016:13:33:19 +0000] Server.httpServe: SHUTDOWN
-[28/May/2016:13:33:19 +0000] Server.httpServe: BACKEND STOPPED
-[28/May/2016:13:33:27 +0000] Server.httpServe: START, binding to [http://0.0.0.0:8000/]
-[28/May/2016:13:33:49 +0000] Server.httpServe: SHUTDOWN
-[28/May/2016:13:33:49 +0000] Server.httpServe: BACKEND STOPPED
-[28/May/2016:13:37:15 +0000] Server.httpServe: START, binding to [http://0.0.0.0:8000/]
-[28/May/2016:13:37:52 +0000] Server.httpServe: SHUTDOWN
-[28/May/2016:13:37:52 +0000] Server.httpServe: BACKEND STOPPED

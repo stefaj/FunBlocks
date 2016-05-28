@@ -29,7 +29,7 @@
     <script src="blockly/msg/js/en.js"></script>
     <script src="blockly/javascript_compressed.js"></script>
 
-
+    <script src="codeworld.js"></script>
   </head>
 
 
@@ -67,13 +67,27 @@
                 <div class="btn-group" role="group" aria-label="...">
                     <button type="button" class="btn btn-primary" id="btnBuild">Build</button>
                     <button type="button" class="btn btn-success" id="btnRun">Run</button>
+                    <button type="button" class="btn btn-warning" id="btnBoom">Boom</button>
                 </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <h3>CodeWorld</h3>
-          <div id="textarea"></div>
+          <div id="result">
+            <iframe id="runner" class="dropbox" width="500" 
+              height="500"></iframe>
+              <pre id="message" class="dropbox" style="width:500px;">
+              </pre>
+          </div>
+          <h4>generatedCode</h4>
+          <pre id="genCode">
+main      = animationOf(design)
+design(t) = rotated(slot, 60 * t) & middle & outside
+slot      = solidRectangle(4, 0.4)
+middle    = solidCircle(1.2)
+outside   = circle(2)
+          </pre>
         </div>
     </div>
   </div>
@@ -109,6 +123,15 @@
     }
     
   });
+  $('#btnBoom').on('click', function(event)
+      {
+        event.preventDefault();
+        alert('compiling');
+        var src = $('#genCode').text();
+        alert(src);
+        compile(src);
+        run();
+      });
 
   </script>
 
