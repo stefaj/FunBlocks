@@ -4,3 +4,6 @@
 [submodule "funblocks-server/src/web/blockly"]
 	path = funblocks-server/src/web/blockly
 	url = https://github.com/google/blockly
+[submodule "web/blockly"]
+	path = web/blockly
+	url = https://github.com/google/blockly
