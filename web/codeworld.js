@@ -59,7 +59,6 @@ function run(hash, msg, error) {
     if (hash && !error) {
         var loc = 'run.html?hash=' + hash + '&mode=' + window.buildMode;
         runner.contentWindow.location.replace(loc);
-        alert(runner.contentWindow.location);
         document.getElementById('runner').style.display = '';
         document.getElementById('runner').contentWindow.focus();
         window.programRunning = true;

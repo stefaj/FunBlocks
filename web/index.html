@@ -30,6 +30,85 @@
     <script src="blockly/javascript_compressed.js"></script>
 
     <script src="codeworld.js"></script>
+    <script src="codegen.js"></script>
+
+
+  <script>
+
+
+    Blockly.Blocks['cw_number'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField(new Blockly.FieldTextInput("10"), "NUMBER");
+        this.setOutput(true, null);
+        this.setColour(210);
+        this.setTooltip('Enter a number');
+      }
+    };
+
+    Blockly.Blocks['cw_drawingOf'] = {
+      init: function() {
+        this.setColour(00);
+        this.appendValueInput('VALUE')
+            .setCheck('Picture')
+            .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField('drawingOf');
+        //this.setOutput(true, 'Program');
+        this.setTooltip('Displays the drawing of the provided picture');
+      }
+    };
+
+    Blockly.Blocks['cw_text'] = {
+      init: function() {
+        this.setColour(160);
+        this.appendDummyInput()
+           // .setCheck('String')
+           // .setAlign(Blockly.ALIGN_RIGHT)
+            .appendField('text')
+            .appendField(new Blockly.FieldTextInput('Pandas here'), 'TEXT' );
+        this.setOutput(true, 'Picture');
+        // this.setTooltip('Displays the drawing of the provided picture');
+      }
+    };
+
+    Blockly.Blocks['cw_combine'] = {
+      init: function() {
+      this.appendDummyInput()
+        .appendField("Combine");
+      this.appendValueInput("Comb1")
+        .setCheck("Picture")
+        .appendField("Picture");
+      this.appendValueInput("Comb2")
+        .setCheck("Picture")
+        .appendField("Picture");
+      this.setInputsInline(false);
+      this.setOutput(true, "Picture");
+      this.setColour(160);
+      this.setTooltip('Combines two pictures');
+     }
+    };
+    Blockly.Blocks['cw_translate'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Translate");
+        this.appendValueInput("PICTURE")
+            .setCheck("Picture")
+            .appendField("Picture");
+        this.appendValueInput("X")
+            .setCheck('Number')
+            .appendField("x");
+        this.appendValueInput("NAME")
+            .setCheck('Number')
+            .appendField("y");
+        this.setInputsInline(true);
+        this.setOutput(true, "Picture");
+        this.setColour(160);
+        this.setTooltip('Translate a picture');
+      }
+    };
+
+  </script>
+
   </head>
 
 
@@ -51,12 +130,13 @@
 
                   <xml id="toolbox" style="display: none">
                           <block type="controls_if"></block>
-                           <block type="controls_repeat_ext"></block>
-                           <block type="logic_compare"></block>
-                           <block type="math_number"></block>
+                           <block type="cw_translate"></block>
+                           <block type="cw_combine"></block>
+                           <block type="cw_drawingOf"></block>
+                           <block type="cw_text"></block>
+                           <block type="cw_number"></block>
                            <block type="math_arithmetic"></block>
                            <block type="text"></block>
-                           <block type="text_print"></block>
                    </xml>
 
                   <div id="blocklyArea">
@@ -93,34 +173,27 @@ outside   = circle(2)
   </div>
 
   <!-- TODO, rewrite with GHCJS -->
+  
+    
   <script>
     var workspace = Blockly.inject('blocklyDiv',
       {toolbox: document.getElementById('toolbox')});
   </script>
 
   <script>
-  function highlightBlock(id) {
-      workspace.highlightBlock(id);
-  }
   $('#btnBuild').on('click', function(event) {
-    event.preventDefault(); // To prevent following the link (optional)
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
+    event.preventDefault(); 
+    var code = Blockly.FunBlocks.workspaceToCode(workspace);
     alert(code);
   });
   
   $('#btnRun').on('click', function(event) {
     event.preventDefault();
 
-    Blockly.JavaScript.STATEMENT_PREFIX = 'highlightBlock(%1);\n';
-    Blockly.JavaScript.addReservedWords('highlightBlock');
+    var src = Blockly.FunBlocks.workspaceToCode(workspace);
 
-    var code = Blockly.JavaScript.workspaceToCode(workspace);
-    try{
-        eval(code);
-    }
-    catch(e){
-      alert(e);
-    }
+    compile(src);
+    run();
     
   });
   $('#btnBoom').on('click', function(event)
