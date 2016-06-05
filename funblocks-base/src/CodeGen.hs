@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 
-module CodeGen
+module CodeGen (assignAll)
   where
 
 import Blockly.Block
