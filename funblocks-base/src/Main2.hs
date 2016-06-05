@@ -21,42 +21,62 @@ import GHCJS.Marshal
 import Data.JSString (unpack, pack)
 import System.IO.Unsafe (unsafePerformIO)
 import Control.Monad.Trans (liftIO)
+import Blockly.Workspace
 import CodeGen
 data Type = TNumber | TString | TPicture | TNone
   deriving Show
 
 
+foreign import javascript unsafe "compile($1)"
+  js_cwcompile :: JSString -> IO ()
 
-foreign import javascript unsafe "Blockly.inject($1, { toolbox: document.getElementById($2)})"
-  js_blocklyInject :: JSString -> JSString -> IO Element
-
-foreign import javascript unsafe "Blockly.JavaScript.workspaceToCode($1)"
-  js_blocklyWorkspaceToCode :: Element -> IO JSString
+foreign import javascript unsafe "run()"
+  js_cwrun :: IO ()
 
 --btnBoomClick :: Document -> Element -> IO ()
 btnBoomClick doc ws = do
         Just body <- getBody doc
         -- (x, y) <- mouseClientXY
         Just newParagraph <- createElement doc (Just "p")
-        jstext <- liftIO $ js_blocklyWorkspaceToCode ws
-        text <- createTextNode doc $ unpack jstext
+        cwtext <- liftIO $ workspaceToCode ws
+        text <- createTextNode doc cwtext
         appendChild newParagraph text
         appendChild body (Just newParagraph)
         return ()
 
 
+btnRunClick ws = do
+  code <- liftIO $ workspaceToCode ws
+  liftIO $ print code
+  liftIO $ js_cwcompile (pack code)
+  liftIO $ js_cwrun
+  return ()
+
+btnBamClick2 = do 
+--    Just doc <- currentDocument 
+    liftIO $ print "bwam"
+    return ()
 
 main = do 
-    
+          
       Just doc <- currentDocument 
       Just body <- getBody doc
 
-      ws :: Element <- js_blocklyInject (pack "blocklyCanvas") (pack "toolbox")
+      workspace <- setWorkspace "blocklyDiv" "toolbox"
+      assignAll
 
-      Just btnBoom <- getElementById doc "btnBoom"  -- fmap castToHTMLButtonElement <$> getElementById doc "btnBoom"
-      on btnBoom click (btnBoomClick doc ws)
-
-      CW.drawingOf (CW.circle (5))
+      Just btnRun <- getElementById doc "btnRun" 
+      on btnRun click (btnRunClick workspace)
+      
+      Just btnBam <- getElementById doc "btnBam"
+      on btnBam click btnBamClick2
+      
+      
+      -- Just btnBoom <- getElementById doc "btnBoom"  
+      -- Just btnBam <- getElementById doc "btnBam"  
+      -- on btnBoom click (btnBoomClick doc ws)
+      -- on btnBam click (btnBamClick doc ws)
+      -- CW.drawingOf (CW.circle (5))
 
 
 

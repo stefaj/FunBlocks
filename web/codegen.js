@@ -114,13 +114,14 @@ Blockly.FunBlocks.scrub_ = function(block, code) {
 
 
 
-
-
+// Moved to Haskell land
+/*
 Blockly.FunBlocks['cw_text'] = function(block)
 {
   var argument = block.getFieldValue('TEXT');
   var code = 'text("' + argument + '")';
-  return [code, Blockly.FunBlocks.ORDER_MEMBER];
+  return code;
+  // return [code, Blockly.FunBlocks.ORDER_MEMBER];
 }
 
 
@@ -155,7 +156,9 @@ Blockly.FunBlocks['cw_combine'] = function(block) {
 Blockly.FunBlocks['cw_translate'] = function(block) {
   var value_picture = Blockly.FunBlocks.valueToCode(block, 'PICTURE', Blockly.FunBlocks.ORDER_ATOMIC);
   var value_x = Blockly.FunBlocks.valueToCode(block, 'X', Blockly.FunBlocks.ORDER_ATOMIC);
-  var value_name = Blockly.FunBlocks.valueToCode(block, 'NAME', Blockly.FunBlocks.ORDER_ATOMIC);
+  var value_name = Blockly.FunBlocks.valueToCode(block, 'Y', Blockly.FunBlocks.ORDER_ATOMIC);
   var code = 'translated (' + value_picture + ',' + value_x + ',' + value_name + ')';
   return [code, Blockly.FunBlocks.ORDER_NONE];
 };
+*/
+
