@@ -31,8 +31,8 @@
 
     <script src="codeworld.js"></script>
     <script src="codegen.js"></script>
-
-
+  
+  
   <script>
 
 
@@ -40,7 +40,7 @@
       init: function() {
         this.appendDummyInput()
             .appendField(new Blockly.FieldTextInput("10"), "NUMBER");
-        this.setOutput(true, null);
+        this.setOutput(true, 'Number');
         this.setColour(210);
         this.setTooltip('Enter a number');
       }
@@ -109,6 +109,20 @@
 
   </script>
 
+
+  <style>
+    .blocklyToolboxDiv
+    {
+      background-color: white !important; 
+    };
+    path .blocklyFlyoutBackground
+    {
+      /* fill: #000 !important; */
+    };
+
+  </style>
+
+
   </head>
 
 
@@ -129,18 +143,25 @@
                 <div class="col-md-12">
 
                   <xml id="toolbox" style="display: none">
+                      <category name="Pictures">
+                          <block type="cw_translate"></block>
+                          <block type="cw_combine"></block>
+                          <block type="cw_drawingOf"></block>
+                          <block type="cw_text"></block>
+                      </category>
+                      <category name="Math">
+                          <block type="cw_number"></block>
+                      </category>
+                      <category name="Temp">
                           <block type="controls_if"></block>
-                           <block type="cw_translate"></block>
-                           <block type="cw_combine"></block>
-                           <block type="cw_drawingOf"></block>
-                           <block type="cw_text"></block>
-                           <block type="cw_number"></block>
-                           <block type="math_arithmetic"></block>
-                           <block type="text"></block>
+                          <block type="math_arithmetic"></block>
+                          <block type="text"></block>
+                      </category>
+
                    </xml>
 
                   <div id="blocklyArea">
-                    <div id="blocklyDiv" style="height: 700px; width:900px;"> </div>
+                    <div id="blocklyDiv" style="height: 900px; width:100%;"> </div>
                   </div>
 
                 </br>
