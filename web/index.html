@@ -27,6 +27,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 
+<!--    <script
+src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script>
+<script src="lang-hs.js"></script> -->
+
+    <script src="sh_main.min.js" > </script>
+    <script src="sh_haskell.min.js" > </script>
+    <link rel="stylesheet" type="text/css" href="sh_style.css" />
+
     <script src="blockly/blockly_compressed.js"></script>
     <script src="blockly/blocks_compressed.js"></script>
     <script src="blockly/msg/js/en.js"></script>
@@ -128,10 +136,11 @@
   </head>
 
 
-  <body>
+  <body onload="sh_highlightDocument();">
   <div class="container-fluid">
     <div class="row full">
-        <div id="sidebar" class="col-md-2">
+        <div id="sidebar" class="col-md-1">
+  
             <h3>Fun Blocks</h3>
             <ul class="nav nav-pills nav-stacked">
                 <li class="active"><a href="#">CodeWorld</a></li>
@@ -141,7 +150,7 @@
         </div>
         <div id="main" class="col-md-6">
             <div class="row">
-              <h3>Blockly</h3>
+              <h3>CodeWorld Blocks</h3>
                 <div class="col-md-12">
 
                   <xml id="toolbox" style="display: none">
@@ -184,14 +193,19 @@
               <pre id="message" class="dropbox" style="width:500px;">
               </pre>
           </div>
-<!--          <h4>generatedCode</h4>
-          <pre id="genCode">
+          <h4>Generated Code:</h4>
+          <pre id="genCode" class="sh_haskell" style="width:500px; height:400px;">
+test :: a -> b -> Int
+fib 0 = 0
+fib 1 = 1
+fib n = fib (n-1) + fib (n-2)
+main :: IO ()
 main      = animationOf(design)
 design(t) = rotated(slot, 60 * t) & middle & outside
 slot      = solidRectangle(4, 0.4)
 middle    = solidCircle(1.2)
 outside   = circle(2)
-          </pre> -->
+          </pre> 
         </div> 
     </div>
   </div>

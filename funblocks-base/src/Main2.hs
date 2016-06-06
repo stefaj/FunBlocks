@@ -44,42 +44,30 @@ btnBoomClick doc ws = do
         appendChild body (Just newParagraph)
         return ()
 
-
 btnRunClick ws = do
+  liftIO $ print "btnRunClick"
+  Just doc <- liftIO currentDocument
   code <- liftIO $ workspaceToCode ws
-  liftIO $ print code
   liftIO $ js_cwcompile (pack code)
   liftIO $ js_cwrun
+  Just genCode <- getElementById doc "genCode"
+  setInnerHTML genCode (Just code)
+  liftIO $ print "this is new"
+  liftIO $ print code
   return ()
 
-btnBamClick2 = do 
---    Just doc <- currentDocument 
-    liftIO $ print "bwam"
-    return ()
 
 main = do 
           
       Just doc <- currentDocument 
       Just body <- getBody doc
 
-      workspace <- setWorkspace "blocklyDiv" "toolbox"
-      assignAll
+      workspace <- liftIO $ setWorkspace "blocklyDiv" "toolbox"
+      liftIO $ assignAll
 
       Just btnRun <- getElementById doc "btnRun" 
       on btnRun click (btnRunClick workspace)
       
-      Just btnBam <- getElementById doc "btnBam"
-      on btnBam click btnBamClick2
-      
-      
-      -- Just btnBoom <- getElementById doc "btnBoom"  
-      -- Just btnBam <- getElementById doc "btnBam"  
-      -- on btnBoom click (btnBoomClick doc ws)
-      -- on btnBam click (btnBamClick doc ws)
-      -- CW.drawingOf (CW.circle (5))
-
-
-
       return ()
     
 -- main = runWebGUI $ \ webView -> do

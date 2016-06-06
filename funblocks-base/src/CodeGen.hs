@@ -13,7 +13,7 @@ import GHCJS.Marshal
 import qualified JavaScript.Array as JA
 import Unsafe.Coerce
 
-setCodeGen :: String -> (Block -> (String, OrderConstants) ) -> IO ()
+setCodeGen :: String -> (Block -> (String, OrderConstant) ) -> IO ()
 setCodeGen blockName func = do
   cb <- syncCallback1' (\x -> do Just b <- fromJSVal x 
                                  let (code,ordr) = func b
@@ -31,7 +31,7 @@ none :: Code -> (Code, OrderConstant)
 none code = (code, CNone)
 
 type Code = String
-type GeneratorFunction = Block -> Code
+type GeneratorFunction = Block -> (Code, OrderConstant)
 
 blockText :: GeneratorFunction
 blockText block = member $ "text(\"" ++ arg ++ "\")"
@@ -47,20 +47,20 @@ blockNumber block = member arg
 blockDrawingOf :: GeneratorFunction
 blockDrawingOf block = member $ "main = drawingOf(" ++ code ++ ");"
   where
-    code = valueToCode block "VALUE" cORDER_ATOMIC
+    code = valueToCode block "VALUE" CAtomic
 
 blockCombine :: GeneratorFunction
 blockCombine block = none $ "(" ++ v1 ++ ") & (" ++ v2 ++ ")"
   where
-    v1 = valueToCode block "Comb1" cORDER_ATOMIC
-    v2 = valueToCode block "Comb2" cORDER_ATOMIC
+    v1 = valueToCode block "Comb1" CAtomic
+    v2 = valueToCode block "Comb2" CAtomic
 
 blockTranslate :: GeneratorFunction
 blockTranslate block = none $ "translated (" ++ pic ++ "," ++ x ++ "," ++ y ++ ")"
   where
-    pic = valueToCode block "PICTURE" cORDER_ATOMIC
-    x = valueToCode block "X" cORDER_ATOMIC
-    y = valueToCode block "Y" cORDER_ATOMIC
+    pic = valueToCode block "PICTURE" CAtomic
+    x = valueToCode block "X" CAtomic
+    y = valueToCode block "Y" CAtomic
 
 blockCodeMap = [ ("cw_text",blockText)
                 ,("cw_translate", blockTranslate)
@@ -72,11 +72,11 @@ blockCodeMap = [ ("cw_text",blockText)
 -- Assigns CodeGen functions defined here to the Blockly Javascript Code
 -- generator
 assignAll :: IO ()
-assignAll = mapM (uncurry setCodeGen) blockCodeMap
+assignAll = mapM_ (uncurry setCodeGen) blockCodeMap
 
 
-valueToCode :: Block -> String -> Int -> String
-valueToCode block name order = unpack $ js_valueToCode block (pack name) order
+valueToCode :: Block -> String -> OrderConstant -> String
+valueToCode block name ordr = unpack $ js_valueToCode block (pack name) (order ordr)
 
 
 
