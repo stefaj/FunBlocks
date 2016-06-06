@@ -17,6 +17,7 @@ cabal.sandbox.config
 *.hp
 .stack-work/
 *.jsexe
+*.swp
 Main
 build/
 data
