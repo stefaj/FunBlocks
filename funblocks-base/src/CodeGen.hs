@@ -13,38 +13,49 @@ import GHCJS.Marshal
 import qualified JavaScript.Array as JA
 import Unsafe.Coerce
 
-setCodeGen :: String -> (Block -> (String, Int) ) -> IO ()
+setCodeGen :: String -> (Block -> (String, OrderConstants) ) -> IO ()
 setCodeGen blockName func = do
   cb <- syncCallback1' (\x -> do Just b <- fromJSVal x 
-                                 let (code,order) = func b
+                                 let (code,ordr) = func b
                                  -- alert(code)
-                                 return $ js_makeArray (pack code) order
+                                 return $ js_makeArray (pack code) (order ordr)
                                  -- toJSVal $ JA.fromList [v,order]
                                  )
   js_setGenFunction (pack blockName) cb
 
 
-member code = (code, cORDER_MEMBER)
-none code = (code, cORDER_NONE)
--- Blocks
+-- Helper functions
+member :: Code -> (Code, OrderConstant)
+member code = (code, CMember)
+none :: Code -> (Code, OrderConstant)
+none code = (code, CNone)
+
+type Code = String
+type GeneratorFunction = Block -> Code
+
+blockText :: GeneratorFunction
 blockText block = member $ "text(\"" ++ arg ++ "\")"
   where
     arg = getFieldValue block "TEXT" 
 
 -- TODO check if it is a number
+blockNumber :: GeneratorFunction
 blockNumber block = member arg 
   where
     arg = getFieldValue block "NUMBER"
 
+blockDrawingOf :: GeneratorFunction
 blockDrawingOf block = member $ "main = drawingOf(" ++ code ++ ");"
   where
     code = valueToCode block "VALUE" cORDER_ATOMIC
 
+blockCombine :: GeneratorFunction
 blockCombine block = none $ "(" ++ v1 ++ ") & (" ++ v2 ++ ")"
   where
     v1 = valueToCode block "Comb1" cORDER_ATOMIC
     v2 = valueToCode block "Comb2" cORDER_ATOMIC
 
+blockTranslate :: GeneratorFunction
 blockTranslate block = none $ "translated (" ++ pic ++ "," ++ x ++ "," ++ y ++ ")"
   where
     pic = valueToCode block "PICTURE" cORDER_ATOMIC
@@ -58,7 +69,10 @@ blockCodeMap = [ ("cw_text",blockText)
                 ,("cw_number",blockNumber)
                 ]
 
-assignAll = mapM (\(n,f) -> setCodeGen n f) blockCodeMap
+-- Assigns CodeGen functions defined here to the Blockly Javascript Code
+-- generator
+assignAll :: IO ()
+assignAll = mapM (uncurry setCodeGen) blockCodeMap
 
 
 valueToCode :: Block -> String -> Int -> String
@@ -74,52 +88,86 @@ foreign import javascript unsafe "Blockly.FunBlocks[$1] = $2"
 foreign import javascript unsafe "Blockly.FunBlocks.valueToCode($1, $2, $3)"
   js_valueToCode :: Block -> JSString -> Int -> JSString
 
--- Ugly hack
+-- TODO, fix, Ugly hack incoming
 foreign import javascript unsafe "[$1,$2]"
   js_makeArray :: JSString -> Int -> JSVal
 
 
-
+-- TODO, remove, was used for testing
+alert :: String -> IO ()
 alert text = js_alert $ pack text
 foreign import javascript unsafe "alert($1)" js_alert :: JSString -> IO ()
 
 
 
+data OrderConstant =  CAtomic
+                    | CMember
+                    | CNew
+                    | CFunctionCall
+                    | CIncrement
+                    | CDecrement
+                    | CLogicalNot
+                    | CBitwiseNot
+                    | CUnaryPlus
+                    | CUnaryNegation
+                    | CTypeOf
+                    | CVoid
+                    | CDelete
+                    | CMultiplication
+                    | CDivision
+                    | CModulus
+                    | CAddition
+                    | CSubstraction
+                    | CBitwiseShift
+                    | CRelational
+                    | CIn
+                    | CInstanceOf
+                    | CEquality
+                    | CBitwiseAnd
+                    | CBitwiseXOR
+                    | CBitwiseOR
+                    | CLogicalAnd
+                    | CLogicalOr
+                    | CConditional
+                    | CAssignment
+                    | CComma
+                    | CNone          
 
 
--- Constants
-cORDER_ATOMIC = 0;         -- 0 "" ...
-cORDER_MEMBER = 1;         -- . []
-cORDER_NEW = 1;            -- new
-cORDER_FUNCTION_CALL = 2;  -- ()
-cORDER_INCREMENT = 3;      -- ++
-cORDER_DECREMENT = 3;      -- --
-cORDER_LOGICAL_NOT = 4;    -- !
-cORDER_BITWISE_NOT = 4;    -- ~
-cORDER_UNARY_PLUS = 4;     -- +
-cORDER_UNARY_NEGATION = 4; -- -
-cORDER_TYPEOF = 4;         -- typeof
-cORDER_VOID = 4;           -- void
-cORDER_DELETE = 4;         -- delete
-cORDER_MULTIPLICATION = 5; -- *
-cORDER_DIVISION = 5;       -- /
-cORDER_MODULUS = 5;        -- %
-cORDER_ADDITION = 6;       -- +
-cORDER_SUBTRACTION = 6;    -- -
-cORDER_BITWISE_SHIFT = 7;  -- << >> >>>
-cORDER_RELATIONAL = 8;     -- < <= > >=
-cORDER_IN = 8;             -- in
-cORDER_INSTANCEOF = 8;     -- instanceof
-cORDER_EQUALITY = 9;       -- == != === !==
-cORDER_BITWISE_AND = 10;   -- &
-cORDER_BITWISE_XOR = 11;   -- ^
-cORDER_BITWISE_OR = 12;    -- |
-cORDER_LOGICAL_AND = 13;   -- &&
-cORDER_LOGICAL_OR = 14;    -- ||
-cORDER_CONDITIONAL = 15;   -- ?:
-cORDER_ASSIGNMENT = 16;    -- = += -= *= /= %= <<= >>= ...
-cORDER_COMMA = 17;         -- ,
-cORDER_NONE = 99;          -- (...)
+-- TODO, still JavaScript CodeGen stuff
+order :: OrderConstant -> Int
+order CAtomic         = 0;  -- 0 "" ...
+order CMember         = 1;  -- . []
+order CNew            = 1;  -- new
+order CFunctionCall   = 2;  -- ()
+order CIncrement      = 3;  -- ++
+order CDecrement      = 3;  -- --
+order CLogicalNot     = 4;  -- !
+order CBitwiseNot     = 4;  -- ~
+order CUnaryPlus      = 4;  -- +
+order CUnaryNegation  = 4;  -- -
+order CTypeOf         = 4;  -- typeof
+order CVoid           = 4;  -- void
+order CDelete         = 4;  -- delete
+order CMultiplication = 5;  -- *
+order CDivision       = 5;  -- /
+order CModulus        = 5;  -- %
+order CAddition       = 6;  -- +
+order CSubstraction   = 6;  -- -
+order CBitwiseShift   = 7;  -- << >> >>>
+order CRelational     = 8;  -- < <= > >=
+order CIn             = 8;  -- in
+order CInstanceOf     = 8;  -- instanceof
+order CEquality       = 9;  -- == != === !==
+order CBitwiseAnd     = 10; -- &
+order CBitwiseXOR     = 11; -- ^
+order CBitwiseOR      = 12; -- |
+order CLogicalAnd     = 13; -- &&
+order CLogicalOr      = 14; -- ||
+order CConditional    = 15; -- ?:
+order CAssignment     = 16; -- = += -= *= /= %= <<= >>= ...
+order CComma          = 17; -- ,
+order CNone           = 99; -- (...)
 
 
 
