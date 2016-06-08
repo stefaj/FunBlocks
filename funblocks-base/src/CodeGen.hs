@@ -44,6 +44,22 @@ blockNumber block = member arg
   where
     arg = getFieldValue block "NUMBER"
 
+blockSolidRectangle :: GeneratorFunction
+blockSolidRectangle block = member $ "solidRectangle(" ++ width ++ "," ++ height ++ ")"
+  where
+    width = valueToCode block "WIDTH" CAtomic
+    height = valueToCode block "HEIGHT" CAtomic
+
+blockSolidCircle :: GeneratorFunction
+blockSolidCircle block = member $ "solidCircle(" ++ radius ++ ")"
+  where
+    radius = valueToCode block "RADIUS" CAtomic
+
+blockCircle :: GeneratorFunction
+blockCircle block = member $ "circle(" ++ radius ++ ")"
+  where
+    radius = valueToCode block "RADIUS" CAtomic
+
 blockDrawingOf :: GeneratorFunction
 blockDrawingOf block = member $ "main = drawingOf(" ++ code ++ ");"
   where
@@ -55,6 +71,12 @@ blockCombine block = none $ "(" ++ v1 ++ ") & (" ++ v2 ++ ")"
     v1 = valueToCode block "Comb1" CAtomic
     v2 = valueToCode block "Comb2" CAtomic
 
+blockColored :: GeneratorFunction
+blockColored block = none $ "colored (" ++ picture ++ ", " ++ color ++ ")"
+  where
+    picture = valueToCode block "PICTURE" CAtomic
+    color = valueToCode block "COLOR" CAtomic
+
 blockTranslate :: GeneratorFunction
 blockTranslate block = none $ "translated (" ++ pic ++ "," ++ x ++ "," ++ y ++ ")"
   where
@@ -62,11 +84,31 @@ blockTranslate block = none $ "translated (" ++ pic ++ "," ++ x ++ "," ++ y ++ "
     x = valueToCode block "X" CAtomic
     y = valueToCode block "Y" CAtomic
 
+blockBlue :: GeneratorFunction
+blockBlue block = member "blue"
+
+blockBrown :: GeneratorFunction
+blockBrown block = member "brown"
+
+blockRed :: GeneratorFunction
+blockRed block = member "red"
+
+blockGreen :: GeneratorFunction
+blockGreen block = member "green"
+
 blockCodeMap = [ ("cw_text",blockText)
                 ,("cw_translate", blockTranslate)
                 ,("cw_combine", blockCombine)
+                ,("cw_colored", blockColored)
                 ,("cw_drawingOf", blockDrawingOf)
                 ,("cw_number",blockNumber)
+                ,("cw_solidrectangle", blockSolidRectangle)
+                ,("cw_solidcircle", blockSolidCircle)
+                ,("cw_circle", blockCircle)
+                ,("cw_blue", blockBlue)
+                ,("cw_red", blockRed)
+                ,("cw_green", blockGreen)
+                ,("cw_brown", blockBrown)
                 ]
 
 -- Assigns CodeGen functions defined here to the Blockly Javascript Code

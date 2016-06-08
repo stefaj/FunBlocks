@@ -83,6 +83,52 @@ src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
       }
     };
 
+    Blockly.Blocks['cw_solidrectangle'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Solid Rectangle");
+        this.appendValueInput("WIDTH")
+            .setCheck("Number")
+            .appendField("Width");
+        this.appendValueInput("HEIGHT")
+            .setCheck("Number")
+            .appendField("Height");
+
+        this.setOutput(true, "Picture");
+        this.setColour(160);
+        this.setTooltip('Picture of a solid rectange');
+      }
+    };
+
+    Blockly.Blocks['cw_solidcircle'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Solid Circle");
+        this.appendValueInput("RADIUS")
+            .setCheck("Number")
+            .appendField("Radius");
+
+        this.setOutput(true, "Picture");
+        this.setColour(160);
+        this.setTooltip('Picture of a solid circle');
+      }
+    };
+
+    Blockly.Blocks['cw_circle'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Circle");
+        this.appendValueInput("RADIUS")
+            .setCheck("Number")
+            .appendField("Radius");
+
+        this.setOutput(true, "Picture");
+        this.setColour(160);
+        this.setTooltip('Picture of a circle');
+      }
+    };
+
+
     Blockly.Blocks['cw_combine'] = {
       init: function() {
       this.appendDummyInput()
@@ -99,6 +145,7 @@ src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
       this.setTooltip('Combines two pictures');
      }
     };
+
     Blockly.Blocks['cw_translate'] = {
       init: function() {
         this.appendDummyInput()
@@ -118,6 +165,64 @@ src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
         this.setTooltip('Translate a picture');
       }
     };
+
+    Blockly.Blocks['cw_blue'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Blue");
+        this.setOutput(true, "Color");
+        this.setColour(290);
+        this.setTooltip('The color blue');
+      }
+    };
+    
+    Blockly.Blocks['cw_red'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Red");
+        this.setOutput(true, "Color");
+        this.setColour(290);
+        this.setTooltip('The color red');
+      }
+    };
+    
+    Blockly.Blocks['cw_green'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Green");
+        this.setOutput(true, "Color");
+        this.setColour(290);
+        this.setTooltip('The color green');
+      }
+    };
+
+    Blockly.Blocks['cw_brown'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Brown");
+        this.setOutput(true, "Color");
+        this.setColour(290);
+        this.setTooltip('The color brown');
+      }
+    };
+
+
+    Blockly.Blocks['cw_colored'] = {
+      init: function() {
+        this.appendDummyInput()
+            .appendField("Change color");
+        this.appendValueInput("PICTURE")
+            .setCheck("Picture")
+            .appendField("Picture");
+        this.appendValueInput("COLOR")
+            .setCheck("Color")
+            .appendField("Color");
+        this.setOutput(true, "Picture");
+        this.setColour(160);
+        this.setTooltip('Change the color of a picture');
+      }
+    };
+
 
   </script>
 
@@ -167,14 +272,26 @@ src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js">
                 <div class="col-md-12">
 
                   <xml id="toolbox" style="display: none">
+                      <category name="Programs">
+                          <block type="cw_drawingOf"></block>
+                      </category>
                       <category name="Pictures">
                           <block type="cw_translate"></block>
                           <block type="cw_combine"></block>
-                          <block type="cw_drawingOf"></block>
+                          <block type="cw_colored"></block>
                           <block type="cw_text"></block>
+                          <block type="cw_solidrectangle"></block>
+                          <block type="cw_circle"></block>
+                          <block type="cw_solidcircle"></block>
                       </category>
                       <category name="Math">
                           <block type="cw_number"></block>
+                      </category>
+                      <category name="Colors">
+                          <block type="cw_red"></block>
+                          <block type="cw_blue"></block>
+                          <block type="cw_green"></block>
+                          <block type="cw_brown"></block>
                       </category>
                       <category name="Temp">
                           <block type="controls_if"></block>
