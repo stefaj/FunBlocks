@@ -11,3 +11,6 @@ The language will feature a visual block-based UI with a code generator that out
 * [The Implementation of Functional Programming Languages](http://research.microsoft.com/en-us/um/people/simonpj/papers/slpj-book-1987/) - Contains a chapter on Polymorphic type checking
 * [Baskell](http://hackage.haskell.org/package/baskell) - A small functional language featuring type inference.
 
+### Formatting code
+* [Haskell Formatted](https://github.com/evolutics/haskell-formatter)
+* [hindent](https://github.com/chrisdone/hindent)
