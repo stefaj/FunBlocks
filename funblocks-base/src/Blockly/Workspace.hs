@@ -28,7 +28,7 @@ workspaceToCode workspace = js_blocklyWorkspaceToCode workspace >>= return . unp
 
 
 --- FFI
-foreign import javascript unsafe "Blockly.inject($1, { toolbox: document.getElementById($2)})"
+foreign import javascript unsafe "Blockly.inject($1, { toolbox: document.getElementById($2), css: false})"
   js_blocklyInject :: JSString -> JSString -> IO Workspace
 
 foreign import javascript unsafe "Blockly.FunBlocks.workspaceToCode($1)"
