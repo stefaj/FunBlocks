@@ -1,6 +1,6 @@
 name:                funblocks-base
 
-version:             0.1.0.0
+version:             0.2.0.0
 
 synopsis:            A functional block-based programming language for CodeWorld
 
@@ -16,14 +16,17 @@ Flag ghcjs
   Description: Tell cabal we are using ghcjs
   Default: True
 
-library
+Executable funblocks-base
   build-depends:       base >=4.8 && <4.9
   
-  hs-source-dirs:      src
-  
+  Hs-source-dirs:      src
+
+  Main-is:             Main.hs
+
   default-language:    Haskell2010
   
-  if flag(ghcjs)
-    build-depends: ghcjs-base,
-                   ghcjs-dom,
-                   ghcjs-canvas
+  Build-depends: ghcjs-base,
+                 ghcjs-dom,
+                 ghcjs-canvas,
+                 codeworld-api,
+                 mtl

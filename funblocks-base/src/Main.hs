@@ -22,7 +22,9 @@ import Data.JSString (unpack, pack)
 import System.IO.Unsafe (unsafePerformIO)
 import Control.Monad.Trans (liftIO)
 import Blockly.Workspace
-import CodeGen
+import Blocks.CodeGen
+import Blocks.Types
+
 data Type = TNumber | TString | TPicture | TNone
   deriving Show
 
@@ -57,6 +59,7 @@ btnRunClick ws = do
   return ()
 
 
+
 main = do 
           
       Just doc <- currentDocument 
@@ -68,6 +71,8 @@ main = do
       Just btnRun <- getElementById doc "btnRun" 
       on btnRun click (btnRunClick workspace)
       
+      liftIO $ setBlockTypes -- assign layout and types of Blockly blocks
+
       return ()
     
 -- main = runWebGUI $ \ webView -> do

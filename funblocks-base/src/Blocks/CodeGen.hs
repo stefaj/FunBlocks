@@ -1,6 +1,6 @@
 {-# LANGUAGE ForeignFunctionInterface, JavaScriptFFI #-}
 
-module CodeGen (assignAll)
+module Blocks.CodeGen (assignAll)
   where
 
 import Blockly.Block
@@ -66,10 +66,10 @@ blockDrawingOf block = member $ "main = drawingOf(" ++ code ++ ");"
     code = valueToCode block "VALUE" CAtomic
 
 blockCombine :: GeneratorFunction
-blockCombine block = none $ "(" ++ v1 ++ ") & (" ++ v2 ++ ")"
+blockCombine block = none $ "(" ++ pic1 ++ ") & (" ++ pic2 ++ ")"
   where
-    v1 = valueToCode block "Comb1" CAtomic
-    v2 = valueToCode block "Comb2" CAtomic
+    pic1 = valueToCode block "PIC1" CAtomic
+    pic2 = valueToCode block "PIC2" CAtomic
 
 blockColored :: GeneratorFunction
 blockColored block = none $ "colored (" ++ picture ++ ", " ++ color ++ ")"
@@ -100,8 +100,8 @@ blockCodeMap = [ ("cw_text",blockText)
                 ,("cw_translate", blockTranslate)
                 ,("cw_combine", blockCombine)
                 ,("cw_colored", blockColored)
-                ,("cw_drawingOf", blockDrawingOf)
-                ,("cw_number",blockNumber)
+                ,("cw_drawingof", blockDrawingOf)
+                ,("number",blockNumber)
                 ,("cw_solidrectangle", blockSolidRectangle)
                 ,("cw_solidcircle", blockSolidCircle)
                 ,("cw_circle", blockCircle)
